@@ -1,0 +1,17 @@
+.guru-lesson-footer {display:none;}
+.guru-lesson {
+    padding-bottom: 0px !important;
+}
+.modal-lesson-content {
+    margin: 0px !important;
+}
+.window .window-mainbody {
+    padding:0px;
+}
+.uk-text-bold.uk-text-center.media-name {
+    margin-top:0px;
+}
+#scorm_object {
+    height:100vh !important;
+    width:100%;
+}

@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-113669914-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-113669914-1');
+</script>
+
+<title>Meraki Exchange Point</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<script type="text/javascript" src="../js/jquery.js"></script>
+<link rel="icon" href="../images/favicon.ico">
+<link href="https://fonts.googleapis.com/css?family=Oswald:400,700|Oxygen|Roboto:700" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+<link rel="stylesheet" href="../css/modal.css"> <!-- modal menu styles -->
+<script src="../js/modal.js"></script> <!-- modal menu animation -->
+<script src="../js/howler.min.js"></script>
+<script src="../js/jquery.waypoints.js"></script>
+<script src="../js/inview.min.js"></script>
+
+
+<!-- screen orientation and true window size for mobile -->
+<script>
+    //set --vh custom property to root of the document
+    let vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+    //for window resize/ orientation changes
+    window.addEventListener('resize', () => {
+        let vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+    });
+</script>
+
+<style>
+    html, body {
+        margin:0;
+        padding:0px;
+        width:100%;
+        height: 100%;
+        background-color: whitesmoke;
+    }
+    @font-face {
+        font-family: 'basquebold';
+        src: url('../fonts/basque_bold-webfont.woff2') format('woff2'),
+             url('../fonts/basque_bold-webfont.woff') format('woff'),
+             url('../fonts/basque_bold-webfont.ttf') format('truetype'),
+             url('../fonts/basque_bold-webfont.svg#basquebold') format('svg');
+        font-weight: normal;
+        font-style: normal;
+    }
+    h1 {
+        font-family: 'Roboto', sans-serif;
+        font-size: 40px;
+        text-align: center;
+        color: #A25D34;
+        line-height: 1.2;}
+    h2 {
+        font-family: 'Roboto', sans-serif;
+        font-size: 25px;
+        text-align: center;
+        color: #A25D34;
+        line-height: 1.2;}
+    p {
+        font-family: 'Roboto', sans-serif;
+        font-size: 18px;
+        text-align: center;
+        color: #A25D34;
+        width: 80%;
+        max-width: 1000px;
+        margin: auto;
+        line-height: 1.2;}
+    a {
+        line-height: 1.2;}
+    
+/*NEW LOGO CSS*/
+    .newlogo {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        height: calc(var(--vh, 1vh) * 100);
+        z-index: 1;
+        background-color: whitesmoke;
+    }
+    .square {
+        position:absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+        background: url('../images/logo_frames-small.png') top center;
+        background-size:100%;
+    }
+    @media only screen and (min-device-width: 500px) {
+        .square {background: url('../images/logo_frames-med.png') top center; background-size:100%;}
+    }
+    @media only screen and (min-device-width: 800px) {
+        .square {background: url('../images/logo_frames-big.png') top center ; background-size:100%;}
+    }
+    @media only screen and (orientation: landscape) {
+        .square {
+            height:85vh;
+            height: calc(var(--vh, 1vh) * 85);
+            width:85vh;
+            width: calc(var(--vh, 1vh) * 85);
+        }
+    }
+    @media only screen and (orientation: portrait) {
+        .square {
+            height: 85vw;
+            width: 85vw;
+        }
+    }
+    .nav-top {
+        position:fixed;
+        right:0;
+        top:0;
+        z-index: 100;
+        display:none;
+    }
+    .nav-top a {
+        position: absolute;
+        top: 20px;
+        right: 60px;
+    }
+    .nav-bottom {
+        position:fixed;
+        left:0;
+        bottom:-30px;
+        z-index: 100;
+        display:none;
+    }
+    .nav-bottom a {
+        position: absolute;
+        bottom: 50px;
+        left: 60px;
+    }
+    .navlinks {
+        text-decoration: none;
+        color: whitesmoke;
+        font-size: 25px;
+        font-family: 'basquebold' !important;
+        font-weight: bolder;
+    }
+    .nav-top a:hover, .nav-top a:focus, .nav-bottom a:hover, .nav-bottom a:focus {
+        color:goldenrod;
+    }
+/*some modal div options*/
+    ul.language {
+        list-style-type: none;
+        width: 100%;
+        text-align: center;
+        margin: -30px 0 0 0;
+        padding: 0 0 0 0;
+    }
+    ul.language li {
+        display: inline-block;
+        padding: 0px 10px 0px 10px;
+    }
+    ul.language li a {
+        font-size: 1.2rem;
+    }
+    
+/*MEDIADIV CSS*/
+    .mediadiv {
+        background-color: whitesmoke;
+        position: relative;
+        z-index: 2;
+        overflow: hidden;
+        text-align: center;
+        width: 100%;
+    }
+    .mediablock {
+        background-color: whitesmoke;
+        position: relative;
+        z-index: 2;
+        overflow: hidden;
+        padding: 5%;
+        padding-top: 2%;
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .videotext {
+        color: #A25D34;
+        position: relative;
+        width: 100%;
+        vertical-align: top;
+        margin-bottom: 10px;
+    }
+    .videotext p, .videotext h2, .videotext h1 {
+        color: #A25D34;
+        text-align: left;
+        margin: 0;
+        margin-bottom: 10px;
+    }
+    .vidwrapper {
+        position: relative;
+        width: 100%;
+        height: 0;
+        padding: 56.25% 0 0 0; /* 100%/16*9 = 56.25% = Aspect ratio 16:9 */
+        overflow: hidden;
+        border: 0;
+    }
+    .vidwrapper iframe {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+    }
+    @media screen and (min-width:900px) {
+        .videotext {width: 380px;}
+        .vidwrapper {width: 400px; height: 225px; padding: 0;}
+        #rightfloat {margin-left: 20px;}
+        #leftfloat {margin-right: 20px;}
+        .mediablock {padding-top: 40px; padding-bottom: 40px; width: 800px;}
+    }
+    @media screen and (min-width:1080px) {
+        .vidwrapper {width: 560px; height: 315px; padding: 0;}
+        .mediablock {width:960px;}
+    }
+    @media screen and (min-width:1110px) {
+        .videotext {width: 400px;}
+        .mediablock {width:990px;}
+    }
+    
+    
+/*OURCAFE CSS*/
+    .slbuttons {
+        position: absolute; width: 100%; height: 100%; top: 0; left: 0;
+        overflow: hidden;
+    }
+    .mySlides {display:none;}
+    .slideshow-container {
+        margin: 0px 22px 0px 22px;
+        overflow: hidden;
+        background-color: whitesmoke;
+    }
+    .prev, .next {
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+        width: auto;
+        padding: 16px;
+        margin: -22px 0px 0px 0px;
+        color: white;
+        background-color: #A25D34;
+        font-weight: bold;
+        font-size: 18px;
+        transition: 0.6s ease;
+    }
+    .prev {left: 0px; border-radius: 3px 3px 3px 3px;}
+    .next {right: 0px; border-radius: 3px 3px 3px 3px;}
+    .prev:hover, .next:hover {background-color: rgba(0,0,0,0.8);}
+    .dot {
+        height: 10px;
+        width: 10px;
+        margin: 0 2px;
+        background-color: transparent;
+        border-radius: 50%;
+        border: solid thin white;
+        display: inline-block;
+        transition: background-color 0.6s ease;
+    }
+    .dotpos {
+        position: absolute;
+        bottom: 4px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .dot.active, .dot:hover {background-color: white;}
+    .fade {
+        -webkit-animation-name: fade;
+        -webkit-animation-duration: 1.5s;
+        animation-name: fade;
+        animation-duration: 1.5s;
+    }
+    @-webkit-keyframes fade {
+        from {opacity: .4}
+        to {opacity: 1}
+    }
+    @keyframes fade {
+        from {opacity: .4}
+        to {opacity: 1}
+    }
+    .slideimg {width: 100%;}
+    
+/*BANNER CSS*/
+    .bannermain {
+        background-color: whitesmoke;
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        max-width: 100%;
+    }
+    .bannermain div {
+        display: inline-block;
+        vertical-align: top;
+    }
+    .bannertext {
+        position: relative;
+        width: 370px;
+        margin-bottom: 30px;
+    }
+    .bannertext p, .bannertext h2, .bannertext h1 {
+        text-align: center;
+        margin-bottom: 10px;
+        margin-top: 0px;
+    }
+    .progress {
+        background-color: whitesmoke;
+        position: relative;
+        z-index: 2;
+        height: 250px;
+        width: 150px;
+        margin-left:110px;
+        margin-right:110px;
+        margin-bottom: 30px;
+    }
+    #myProgress {
+        height: 100%;
+        width: 100%;
+        background-color: #ddd;
+        position: relative;
+        z-index: 3;
+        -webkit-mask-image: url(../images/mask.svg);
+        -webkit-mask-repeat: no-repeat;
+    }
+    #coffeeFill {
+        width: 100%;
+        height: 1%;
+        background-color: #A25D34;
+        text-align: center;
+        line-height: 30px;
+        color: white;
+        position: absolute;
+        left:0; bottom:0;
+        z-index: 3;
+    }
+    .progress img {
+        width:100%;
+        height:100%;
+        z-index: 4;
+        position: absolute;
+        left:0; bottom:0;
+    }
+    .signup {
+        background-color: #A25D34;
+        border: none;
+        border-radius: 8px;
+        color: whitesmoke;
+        padding: 15px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        font-family: 'Roboto', sans-serif;
+    }
+    .signup:hover {
+        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    }
+    
+/*SOCIAL MEDIA BUTTONS CSS*/
+    ul.socials {
+        list-style-type: none;
+        width: 100%;
+        margin: 0 0 0 0;
+        padding: 15px 0 15px 0;
+        position: relative;
+        text-align: center;
+    }
+    ul.socials li {
+        display: inline-block;
+        padding: 0px 30px 0px 30px;
+    }
+    ul.socials li a {
+        color: #A25D34;
+        text-decoration: none;
+        font-size: 50px;
+        font-family: 'Roboto', sans-serif;
+    }
+    @media screen and (max-width:540px) {
+        ul.socials li {padding: 0px 15px 0px 15px;}
+    }
+    @media screen and (max-width:390px) {
+        .bannertext {width: 310px;}
+        .progress {margin-left:80px; margin-right:80px;}
+        ul.socials li {padding: 0px 10px 0px 10px;}
+    }
+
+</style>
+
+</head>
+    
+<body>
+<iframe src="../sounds/silence.mp3" allow="autoplay" id="audio" style="display:none"></iframe> 
+<main class="cd-main-content">
+
+    <div class="nav-top"> <!-- top navigation -->
+        <img src="../images/nav-top.png">
+        <a href="#0" class="navlinks cd-modal-trigger">MENU</a>
+    </div>
+    
+    <div class="nav-bottom"> <!-- bottom navigation -->
+        <img src="../images/nav-bottom.png">
+        <a href="https://drive.google.com/open?id=1JgBrNy4tx9J3x2ogM4N2vXG8Rt2TCDLe543gA4tc8mo" class="navlinks cd-transition-trigger">EMAN IZENA!</a>
+    </div>
+    
+    <div class="newlogo">
+        <div class="square"></div>
+    </div>
+    
+    <a name="about"></a>
+    <div class="mediadiv">  
+        <div class="mediablock">
+            <div class="videotext" id="vidText" style="float:left;">
+                <h1>Zer da Meraki?</h1>
+                <p>Meraki Exchange Point O&ntilde;atiko ingeles eskola eta kafetegia da. Punta-puntako teknologia, ikasketa erdipresentzialak eta ikasteko giro lasaia konbinatu ditugu ikasleei ikasten eta benetako egoeretan elkarri eragiten laguntzeko. Gure kafetegian edonork hark dezake kafe bat edo jateko zerbait, ikasle edo ez. Zatoz gurekin ikastera!</p>
+            </div><!--videotext-->
+            <div class="vidwrapper" id="rightfloat" style="float:right;">
+                <iframe src="https://www.youtube.com/embed/UPWM8pSCvCI?rel=0" frameborder="0" allowfullscreen></iframe>
+            </div><!--vidwrapper-->
+            <br style="clear:both;">
+        </div> <!--mediablock-->
+    </div> <!--mediadiv-->
+    
+    <div class="mediadiv">  
+        <div class="mediablock">
+            <div class="videotext" id="vidText" style="float:right;">
+                <h1>Gure Kafetegia</h1>
+                <p>Gure kafetegia aukera ematen die herritarrei kafe baterako elkartu eta ingelesez mintzatzeko. Zerbitzariekin hitz egin, kafea eskatu, aldizkari bat edo liburu bat irakurri, musika entzun... ingelesez egin dezakezu guztia. Ingelesez hitz egiten ez badakizu, lasai. Ingelesaz gain, gaztelaniaz ere mintza gaitezke. Gure menu apartan bertako elikagai freskoak erabiltzen ditugu Euskal Herriko onena modu originalean erakusteko.</p>
+            </div><!--videotext-->
+            <div class="vidwrapper" id="leftfloat" style="float:left;">
+                <div class="slbuttons">
+                    <div class="slideshow-container" id="slideshow">
+                        <div class="mySlides fade">
+                            <img class="slideimg" src="../images/slides/1.jpg">
+                        </div>
+                        <div class="mySlides fade">
+                            <img class="slideimg" src="../images/slides/2.jpg">
+                        </div>
+                        <div class="mySlides fade">
+                            <img class="slideimg" src="../images/slides/3.jpg">
+                        </div>
+                        <div class="mySlides fade">
+                            <img class="slideimg" src="../images/slides/4.jpg">
+                        </div>
+                        <div class="mySlides fade">
+                            <img class="slideimg" src="../images/slides/5.jpg">
+                        </div>
+                        <div class="mySlides fade">
+                            <img class="slideimg" src="../images/slides/6.gif">
+                        </div>
+                        <div class= "dotpos">
+                            <span class="dot" onclick="currentSlide(1)"></span>
+                            <span class="dot" onclick="currentSlide(2)"></span>
+                            <span class="dot" onclick="currentSlide(3)"></span>
+                            <span class="dot" onclick="currentSlide(4)"></span>
+                            <span class="dot" onclick="currentSlide(5)"></span>
+                            <span class="dot" onclick="currentSlide(6)"></span>
+                        </div>
+                    </div><!-- slideshow-container -->
+                    <a class="prev" onclick="plusSlides(-1)">&#12296;</a>
+                    <a class="next" onclick="plusSlides(1)">&#12297;</a>
+                </div><!-- slbuttons -->
+            </div><!--vidwrapper-->
+            <br style="clear:both;">
+        </div><!--mediablock-->
+    </div><!--mediadiv-->
+    
+    <div class="mediadiv">  
+        <div class="mediablock">
+            <div class="videotext" id="vidText" style="float:left;">
+                <h1>Gure Eskola</h1>
+                <p>Ingelesa etxetik gertu eta benetako egoeretan ikasteko giroa sortzen du Merakik. Gure lehiakideek ez bezala, gure ingeles eskolak ez dira oinarritzen azterketak gainditzeko ikastean, <i>baizik eta ingelesa benetako egoeretan ulertzean.</i> Ikasgeletatik kanpo ikasiz, ikasle bakoitzak ikasketa prozesua jarrai dezake bere erritmora, Cambridgeko eta nazioarteko estandarrak mantenduz.</p>
+            </div><!--videotext-->
+            <div class="vidwrapper" id="rightfloat" style="float:right;">
+                <iframe src="https://www.youtube.com/embed/ojiebVw8O0g?rel=0" frameborder="0" allowfullscreen></iframe>
+            </div><!--vidwrapper-->
+            <br style="clear:both;">
+        </div> <!--mediablock-->
+    </div> <!--mediadiv-->
+    
+    <div class="bannermain">
+            <div class="bannertext">
+                <h1>Eman izena!</h1>
+                <p>Ingelesa ikasi nahi duzu gurekin? Matrikula epean gaude. Hobeto ezagutu zaitzagun, mesedez, bete ezazu hurrengo galdetegia edo posta elektroniko bidez <a href="mailto:info@merakischools.com" style="color:#A25D34;">info@merakischools.com</a></p>
+                <a href="https://drive.google.com/open?id=1JgBrNy4tx9J3x2ogM4N2vXG8Rt2TCDLe543gA4tc8mo" class="signup cd-transition-trigger">Eman izena!</a>
+            </div><!--bannertext-->
+            <div class="bannertext">
+                <h1>Lagundu</h1>
+                <p>Parte hartu Meraki Exchange Point errealitate bihurtzeko prozesuan. <i>Crowdfunding</i> kanpaina bat abiarazi dugu berritze eta hornitze kostuak ordaintzeko. Lagundu $4000 USD-eko helburua lortzen inaugurazio aurretik!</p>
+                <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                <input type="hidden" name="cmd" value="_s-xclick">
+                <input type="hidden" name="hosted_button_id" value="4TJED3X5HNC2J">
+                <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit">
+                <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+                </form>
+            </div><!--bannertext-->
+            <div class="progress">
+                <img src="../images/coffeeprog-small.png">
+                <div id="myProgress">
+                    <div id="coffeeFill">1%</div>
+                </div>
+            </div>
+    </div><!--bannermain-->
+    
+   <ul class="socials">
+        <li><a href="http://www.facebook.com/merakiexchangepoint/"><i class="fa fa-facebook"></i></a></li>
+        <li><a href="https://www.youtube.com/channel/UC0ydnMNy0VBWHBKYHCBzOTA"><i class="fa fa-youtube-play"></i></a></li>
+        <li><a href="http://www.instagram.com/merakiexchangepoint"><i class="fa fa-instagram"></i></a></li>
+        <li><a href="http://twitter.com/Mexchangepoint"><i class="fa fa-twitter"></i></a></li>
+        <li><a href="mailto:info@merakischools.com"><i class="fa fa-paper-plane"></i></a></li>
+    </ul>
+    
+    <div class="bannermain" style="padding-bottom:0px;">
+        <p style="padding-bottom: 90px; margin-top: 20px; opacity: .6">&#169; 2019 Meraki Schools</p>
+    </div><!--bannermain-->
+
+
+</main> <!-- .cd-main-content -->
+    
+<div class="cd-modal">
+	<div class="modal-content">
+		<h1 style="color:whitesmoke">MENU</h1>
+        <ul class="language">
+            <li><a href="../en/">EN</a></li>
+            <li><a href="../es/">ES</a></li>
+            <li><a href="../eu/">EU</a></li>
+        </ul>
+        <a href="https://merakischools.com/portal/">Nire portala</a>
+        <a href="#about" class="modal-close2">Guri buruz</a>
+        <a href="https://drive.google.com/open?id=1JgBrNy4tx9J3x2ogM4N2vXG8Rt2TCDLe543gA4tc8mo">Eman izena!</a>
+    	</div> <!-- .modal-content -->
+	<a href="#0" class="modal-close">Close</a>
+</div> <!-- .cd-modal -->
+
+<div class="cd-transition-layer"> 
+	<div class="bg-layer"></div>
+</div> <!-- .cd-transition-layer -->
+    
+<script>
+    
+/*CONTROLS LOGO ANIMATION*/
+    //sound autoplay removed - now breaks website in Chrome
+    /*$(function spillsound() {
+        setTimeout(function() {
+            var sound = new Howl({
+                src: ['../sounds/spill.mp3']
+            });
+            sound.play();
+            sound.on('play', function(){
+                newlogo();
+            });
+        }, 0);
+    });*/
+   $(function newlogo() {
+        setTimeout(function(){
+            var ani = {
+                num_frames: 76,
+                loop_frame: 23,
+                frame_duration: 167,
+                cur_frame: 0
+            };
+            window.setInterval(
+                function() {
+                    $(".square").css('background-position-y',(100/(ani.num_frames - 1) * ani.cur_frame) + '%');
+                    ani.cur_frame = (ani.cur_frame + 1) % ani.num_frames;
+                    if (ani.cur_frame == 0) ani.cur_frame = ani.loop_frame;
+                },
+                ani.frame_duration
+            );
+        }, 700);
+        setTimeout(function(){
+            $(".nav-top, .nav-bottom").fadeIn(4000);
+        }, 700);
+    });
+    
+/*CONTROLS CAFE SLIDESHOW*/
+    var slideIndex = 1;
+    showSlides(slideIndex);
+    function plusSlides(n) {showSlides(slideIndex += n);}
+    function currentSlide(n) {showSlides(slideIndex = n);}
+    setInterval(function(){showSlides(slideIndex++);}, 10000);
+    function showSlides(n) {
+        var i;
+        var slides = document.getElementsByClassName("mySlides");
+        var dots = document.getElementsByClassName("dot");
+        if (slideIndex < 1) {slideIndex = slides.length}
+        if (slideIndex > slides.length) {slideIndex = 1}
+        for (i = 0; i < slides.length; i++) {
+           slides[i].style.display = "none";
+        }
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[slideIndex-1].style.display = "block";
+        dots[slideIndex-1].className += " active";
+    }
+    
+/*CONTROLS COFFEE PROGRESS BAR*/
+    function move() {
+        var elem = document.getElementById("coffeeFill");   
+        var height = 1;
+        var id = setInterval(frame, 50);
+        function frame() {
+            if (height >= 69) {
+                clearInterval(id);
+            } else {
+                height++; 
+                elem.style.height = height + '%'; 
+                elem.innerHTML = height * 1  + '%';
+            }
+        }
+    }
+    var inview1 = new Waypoint.Inview({
+        element: $('.progress')[0],
+        entered: function(direction) {
+            move();
+        }
+    });
+      
+</script>
+    
+</body>  
+</html>
