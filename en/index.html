@@ -43,6 +43,7 @@
         width:100%;
         height: 100%;
         background-color: whitesmoke;
+        -webkit-transform: translate3d(0,0,0);
     }
     @font-face {
         font-family: 'basquebold';
@@ -116,11 +117,13 @@
         }
     }
     .nav-top {
-        position:fixed;
-        right:0;
-        top:0;
+        position:-webkit-sticky;
+        position:sticky;
+        right:0px;
+        top:0px;
         z-index: 100;
         display:none;
+        float:right;
     }
     .nav-top a {
         position: absolute;
@@ -128,8 +131,9 @@
         right: 60px;
     }
     .nav-bottom {
-        position:fixed;
-        left:0;
+        position:-webkit-sticky;
+        position:sticky;
+        left:0px;
         bottom:-30px;
         z-index: 100;
         display:none;
@@ -408,10 +412,7 @@
         <a href="#0" class="navlinks cd-modal-trigger">MENU</a>
     </div>
     
-    <div class="nav-bottom"> <!-- bottom navigation -->
-        <img src="../images/nav-bottom.png">
-        <a href="https://drive.google.com/open?id=1JgBrNy4tx9J3x2ogM4N2vXG8Rt2TCDLe543gA4tc8mo" class="navlinks cd-transition-trigger">SIGN UP!</a>
-    </div>
+
     
     <div class="newlogo">
         <div class="square"></div>
@@ -524,27 +525,33 @@
         <p style="padding-bottom: 90px; margin-top: 20px; opacity: .6">&#169; 2019 Meraki Schools</p>
     </div><!--bannermain-->
 
-
-</main> <!-- .cd-main-content -->
+    <div class="nav-bottom"> <!-- bottom navigation -->
+        <img src="../images/nav-bottom.png">
+        <a href="https://drive.google.com/open?id=1JgBrNy4tx9J3x2ogM4N2vXG8Rt2TCDLe543gA4tc8mo" class="navlinks cd-transition-trigger">SIGN UP!</a>
+    </div>
     
-<div class="cd-modal">
-	<div class="modal-content">
-		<h1 style="color:whitesmoke">MENU</h1>
-        <ul class="language">
-            <li><a href="../en/">EN</a></li>
-            <li><a href="../es/">ES</a></li>
-            <li><a href="../eu/">EU</a></li>
-        </ul>
-        <a href="https://merakischools.com/portal/">My Portal</a>
-        <a href="#about" class="modal-close2">About</a>
-        <a href="https://drive.google.com/open?id=1JgBrNy4tx9J3x2ogM4N2vXG8Rt2TCDLe543gA4tc8mo">Sign Up</a>
-    	</div> <!-- .modal-content -->
-	<a href="#0" class="modal-close">Close</a>
-</div> <!-- .cd-modal -->
+</main> <!-- .cd-main-content -->
 
-<div class="cd-transition-layer"> 
-	<div class="bg-layer"></div>
-</div> <!-- .cd-transition-layer -->
+    <div class="cd-modal">
+        <div class="modal-content">
+            <h1 style="color:whitesmoke">MENU</h1>
+            <ul class="language">
+                <li><a href="../en/">EN</a></li>
+                <li><a href="../es/">ES</a></li>
+                <li><a href="../eu/">EU</a></li>
+            </ul>
+            <a href="https://merakischools.com/portal/">My Portal</a>
+            <a href="#about" class="modal-close2">About</a>
+            <a href="https://drive.google.com/open?id=1JgBrNy4tx9J3x2ogM4N2vXG8Rt2TCDLe543gA4tc8mo">Sign Up</a>
+            </div> <!-- .modal-content -->
+        <a href="#0" class="modal-close">Close</a>
+    </div> <!-- .cd-modal -->
+    
+    <div class="cd-transition-layer"> 
+        <div class="bg-layer"></div>
+    </div> <!-- .cd-transition-layer -->
+
+
     
 <script>
     
@@ -582,7 +589,7 @@
             $(".nav-top, .nav-bottom").fadeIn(4000);
         }, 700);
     });
-    
+   
 /*CONTROLS CAFE SLIDESHOW*/
     var slideIndex = 1;
     showSlides(slideIndex);
